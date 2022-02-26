@@ -14,7 +14,28 @@ const thoughtController = {
         })
       });
   },
-//POST /api/thoughts to create a new thought, push the created thought's _id to the associated user's thoughts array field
+  //get thought by id 
+getSingleThought({params}, res) {
+    Thought.findOne({_id: params.thoughtId})
+    .populate({
+        path: "reactions",
+        select:"-_v",
+    })
+    .select("-_v")
+    .then((dbThought) => {
+        if(!dbThought) {
+            res.status(404).json({
+                message: "No thought found with this id!"
+            })
+            return;
+        }
+        res.json(dbThought)
+    })
+    .catch((err) => {
+        res.status(400).json(err)
+    })
+},
+//create a new thought, push thought's associated user 
 createThought({ body }, res) {
     //find username first
     User.findOne({ username: body.username})
@@ -37,23 +58,23 @@ createThought({ body }, res) {
     })
     .catch((err) => res.status(400).json(err))
   },
+  updateThought ({params, body}, res) {
+      Thought.findOneAndUpdate({_id: params.thoughtId}, body, {
+          new: true,
+          runValidators: true
+      })
+      .then((dbThought) => {
+          if(!dbThought) {
+              res.status(404).json({
+                  message: "No thought found with this id!",
+              })
+              return;
+          }
+          res.json(dbThought)
 
-  //GET /api/thoughts/:id to get a single thought by its _id
-//   getSingleThought({ params }, res) {
-//     Thought.findOne({ _id: params.thoughtId })
-//       .populate({ path: "reaction", select: "_v" })
-//       .select("_v")
-//       .then((dbThought) => {
-//         if (!dbThought) {
-//           res.status(404).json({ message: "No thought found with this id" });
-//           return;
-//         }
-
-//         res.json(dbThought);
-//       });
-//   },
-  
-//   updateThought
+      })
+      .catch((err) => res.json(err))
+  }
 
 };
 
