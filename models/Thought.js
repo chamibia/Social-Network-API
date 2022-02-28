@@ -10,8 +10,8 @@ const thoughtSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now,
-      get: (createdAtVal) => dateformat(createdAtVal),
+      default: Date.now
+      // get: (createdAtVal) => dateformat(createdAtVal),
     },
     username: {
       type: String,
@@ -22,7 +22,7 @@ const thoughtSchema = new Schema(
   },
   {
     toJSON: {
-      virtuals: true,
+      virtuals: true
     },
     id: false,
   }

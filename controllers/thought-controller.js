@@ -1,4 +1,4 @@
-const { Thought, User, Reaction } = require("../models");
+const { Thought, User } = require("../models");
 
 const thoughtController = {
   //get /api/thoughts all thoughts
@@ -9,7 +9,6 @@ const thoughtController = {
       .then((dbThought) => {
         res.json(dbThought)
         .catch((err) => {
-            console.log(err)
             res.status(400).json(err)
         })
       });

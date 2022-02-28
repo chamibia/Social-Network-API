@@ -1,0 +1,1 @@
+- route issue was mispelled params and mongoose failed silently when addtoset got undefined for :friendsId when passed as req.params.friendId
